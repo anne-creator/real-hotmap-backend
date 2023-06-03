@@ -82,4 +82,4 @@ const uberDataSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model("UberData", uberDataSchema);
+module.exports = mongoose.model("UberData", uberDataSchema, 'UberData');
