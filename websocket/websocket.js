@@ -1,4 +1,10 @@
-const { WebSocketServer } = require('ws');
-const webSocket = new WebSocketServer({ port: 8081 });
+const WebSocket = require('ws');
 
-module.exports = webSocket;
+let webSocket;
+
+const createWebSocketServer = (server) => {
+  webSocket = new WebSocket.Server({ server });
+  return webSocket;
+}
+
+module.exports = createWebSocketServer;
