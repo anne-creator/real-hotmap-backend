@@ -1,9 +1,12 @@
 const asyncHandler = require("express-async-handler");
 const UberData = require("../models/uberData");
+
 //@desc Get Sample Data
 //@route GET /api/
+
 const getPickupData = async (req, res) => {
     const uberData = await UberData.find();
+
 
     // Count the occurrences of each locationId
     const locationCounts = uberData.reduce((counts, data) => {
