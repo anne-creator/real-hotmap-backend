@@ -4,9 +4,21 @@ const connectDb = require("./config/dbConnection")
 const dotenv = require("dotenv").config();
 const errorHandler = require("./middleware/errorHandler");
 const port = process.env.PORT;
+const webSocket = require("./websocket/websocket");
+const UberData = require("./models/uberData");
 app.use(express.json());
 
+//when testing, use Postman and use ws://localhost:8081
+//we can remove the GET since websocket will do the same work
+//TODO: complete the logic for fetching all data from DB.
+webSocket.on('connection', async (webSocketClient) => {
+    console.log('A new client Connected!');   
+    const tempDetails = await UberData.find().limit(50);;
+    webSocketClient.send(JSON.stringify(tempDetails));
+});
+
 connectDb();
+
 // first routes is the folder name, second is the file name
 app.use("/api/example", require("./routes/routes"))
 app.use(errorHandler);
