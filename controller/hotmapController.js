@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const UberData = require("../models/uberData");
+
 const getMappingTable = require("../mappingTable/locationIdToLatLong");
 //@desc Get Sample Data
 //@route GET /api/
@@ -63,6 +64,7 @@ const getPickupData = async (req, res) => {
   res.status(200).json(jsonResult);
 };
 
+
 // Helper function to format date and time
 const formatDate = (date) => {
   const year = date.getUTCFullYear();
@@ -81,3 +83,4 @@ const padNumber = (number) => {
 };
 
 module.exports = { getPickupData };
+
