@@ -35,35 +35,22 @@ const getPickupData = async (req, res) => {
     const scaledDensity = density  / maxDensity;
 
     return {
-      type: "Feature",
-      properties: {
         id: `nyk${padNumber(index + 1)}`, // Auto-incrementing ID
         time: formattedTime,
         density: scaledDensity,
-      },
-      geometry: {
-        type: "Point",
         lat: lat,
         long: long,
+        type: "pickup",
         // locationId: locationId, // Matches PULocationID
-      },
     };
   });
 
   const jsonResult = {
-    type: "FeatureCollection",
-    crs: {
-      type: "name",
-      properties: {
-        name: "urn:ogc:def:crs:OGC:1.3:CRS84",
-      },
-    },
     features: transformedData,
   };
 
   res.status(200).json(jsonResult);
 };
-
 
 // Helper function to format date and time
 const formatDate = (date) => {
