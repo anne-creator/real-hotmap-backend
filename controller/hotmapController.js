@@ -44,10 +44,9 @@ const getPickupData = async (req, res) => {
         // locationId: locationId, // Matches PULocationID
     };
   });
+  
+  const jsonResult = transformedData 
 
-  const jsonResult = {
-    features: transformedData,
-  };
 
   res.status(200).json(jsonResult);
 };
