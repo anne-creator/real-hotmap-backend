@@ -45,9 +45,7 @@ const getPickupData = async (req, res) => {
     };
   });
 
-  const jsonResult = {
-    features: transformedData,
-  };
+  const jsonResult = transformedData 
 
   res.status(200).json(jsonResult);
 };
