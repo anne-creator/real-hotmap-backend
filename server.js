@@ -7,7 +7,7 @@ const port = process.env.PORT;
 // const webSocket = require("./websocket/websocket");
 const createWebSocketServer = require("./websocket/websocket");
 const UberData = require("./models/uberData");
-const { getUberData } = require('./controller/hotmapController');
+const { getPickupData } = require('./controller/hotmapController');
 app.use(express.json());
 
 connectDb();
@@ -27,6 +27,6 @@ const webSocket = createWebSocketServer(server);
 //TODO: complete the logic for fetching all data from DB.
 webSocket.on('connection', async (webSocketClient) => {
     console.log('A new client Connected!');   
-    const uberData = await getUberData();
+    const uberData = await getPickupData();
     webSocketClient.send(JSON.stringify(uberData));
 });

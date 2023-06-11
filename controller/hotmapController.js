@@ -47,8 +47,8 @@ const getPickupData = async (req, res) => {
   
   const jsonResult = transformedData 
 
-
-  res.status(200).json(jsonResult);
+  return JSON.stringify(jsonResult)
+  // res.status(200).json(jsonResult);
 };
 
 // Helper function to format date and time
