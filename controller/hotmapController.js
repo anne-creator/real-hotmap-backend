@@ -44,6 +44,7 @@ const getPickupData = async (req, res) => {
         // locationId: locationId, // Matches PULocationID
     };
   });
+  
 
   const jsonResult = transformedData 
 
