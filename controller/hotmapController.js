@@ -32,7 +32,7 @@ const getPickupData = async (req, res) => {
     const { lat, long } = mappingTable[locationId];
     // Apply scaling factor to density
     // const scalingFactor = 10; // Adjust this value to control the scaling
-    const scaledDensity = density  / maxDensity;
+    const scaledDensity = density / maxDensity;
 
     return {
         id: `nyk${padNumber(index + 1)}`, // Auto-incrementing ID
@@ -42,13 +42,16 @@ const getPickupData = async (req, res) => {
         long: long,
         type: "pickup",
         // locationId: locationId, // Matches PULocationID
+
     };
   });
   
 
+
   const jsonResult = transformedData 
 
-  res.status(200).json(jsonResult);
+
+  return JSON.stringify(jsonResult)
 };
 
 // Helper function to format date and time
