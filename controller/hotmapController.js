@@ -35,17 +35,21 @@ const getPickupData = async (req, res) => {
     const scaledDensity = density / maxDensity;
 
     return {
-      id: `nyk${padNumber(index + 1)}`, // Auto-incrementing ID
-      time: formattedTime,
-      density: scaledDensity,
-      lat: lat,
-      long: long,
-      type: "pickup",
-      // locationId: locationId, // Matches PULocationID
+        id: `nyk${padNumber(index + 1)}`, // Auto-incrementing ID
+        time: formattedTime,
+        density: scaledDensity,
+        lat: lat,
+        long: long,
+        type: "pickup",
+        // locationId: locationId, // Matches PULocationID
+
     };
   });
+  
 
-  const jsonResult = transformedData
+
+  const jsonResult = transformedData 
+
 
   return JSON.stringify(jsonResult)
 };
