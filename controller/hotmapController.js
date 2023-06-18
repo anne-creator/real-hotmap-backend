@@ -73,3 +73,9 @@ const padNumber = (number) => {
 
 module.exports = { getPickupData };
 
+const getData = asyncHandler(async (req,res) => {
+  console.log(req.query)
+  res.status(200).json({message: `Message recieved`});
+});
+
+module.exports = {getData};

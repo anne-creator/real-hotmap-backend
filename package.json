@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/anne-creator/realtime-hotmap-backend#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "csv-parser": "^3.0.0",
     "dotenv": "^16.1.3",
     "express": "^4.18.2",
