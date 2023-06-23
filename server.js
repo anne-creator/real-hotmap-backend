@@ -9,6 +9,7 @@ const UberData = require("./models/uberData");
 const cors = require('cors');
 
 const { getPickupData } = require('./controller/hotmapController');
+
 app.use(express.json());
 app.use(cors());
 
