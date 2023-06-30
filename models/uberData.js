@@ -17,6 +17,10 @@ const uberDataSchema = new Schema({
     DOLocationID:{
         type: Number,
         required: [true, "Please add a DOLocationID"]
+    },
+    Hvfhs_license_num :{
+        type: String,
+        required: [true, "Please add a Hvfhs_license_num "]
     }
 });
 

@@ -6,20 +6,6 @@ const lat = [];
 const long = [];
 const mappingTable = {};
 
-// fs.createReadStream('processed_data-v1.csv')
-//   .pipe(csv())
-//   .on('data', (data) => {
-//     // Extract the desired columns from each row
-//     const id = data['LocationID'];
-//     const latitude = data['Latitude'];
-//     const longitude = data['Longitude'];
-    
-//     locationId.push(id);
-//     lat.push(latitude);
-//     long.push(longitude);
-    
-//     mappingTable[id] = { lat: latitude, long: longitude };
-//   });
 const parseCSV = () => {
   return new Promise((resolve, reject) => {
     fs.createReadStream('processed_data-v1.csv')
