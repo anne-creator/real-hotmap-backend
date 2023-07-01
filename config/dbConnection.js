@@ -5,9 +5,10 @@ const fs = require('fs');
 const avro = require('avro-js');
 var path = require("path");
 let mongodbClient;
+
 const connectDb = async () => {
     try {
-        // const connect = await mongoose.connect(process.env.CONNECTION_STRING);
+        const connect = await mongoose.connect(process.env.CONNECTION_STRING);
         mongodbClient = new MongoClient(process.env.CONNECTION_STRING);
         console.log("Database connected ");
         await monitorCollectionForInserts(mongodbClient, 'Uber_NYC', 'UberData');
@@ -57,7 +58,8 @@ async function monitorCollectionForInserts(client, databaseName, collectionName)
         pickup_datetime: document.pickup_datetime.toString(),
         PULocationID: document.PULocationID.toString(),
         dropoff_datetime: document.dropoff_datetime.toString(),
-        DOLocationID: document.DOLocationID.toString()
+        DOLocationID: document.DOLocationID.toString(),
+        Hvfhs_license_num: document.Hvfhs_license_numnp.toString(),
     };
     
     const dataBuffer = Buffer.from(type.toString(message));
@@ -68,17 +70,5 @@ async function monitorCollectionForInserts(client, databaseName, collectionName)
         console.error(error);
     }
  }
-
-// const mongoose = require("mongoose");
-
-// const connectDb = async () => {
-//     try {
-//         const connect = await mongoose.connect(process.env.CONNECTION_STRING);
-//         console.log("Database connected: ", connect.connection.host, connect.connection.name)
-//     } catch (err) {
-//         console.log(err);
-//         process.exit(1);
-//     }
-// }
 
 module.exports = connectDb;

@@ -25,3 +25,7 @@ webSocket.on('connection', async (webSocketClient) => {
     const uberData = await getPickupData();
     webSocketClient.send(JSON.stringify(uberData));
 });
+
+webSocket.on('error', (error)=>{
+    console.log(error);
+});

@@ -21,6 +21,10 @@
     {
       "name": "DOLocationID",
       "type": "string"
+    },
+    {
+      "name": "Hvfhs_license_num",
+      "type": "string"
     }
   ]
 }

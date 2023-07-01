@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const UberData = require("../models/uberData");
-
 const getMappingTable = require("../mappingTable/locationIdToLatLong");
 //@desc Get Sample Data
 //@route GET /api/
@@ -71,11 +70,10 @@ const padNumber = (number) => {
   return String(number).padStart(5, "0");
 };
 
-module.exports = { getPickupData };
 
 const getData = asyncHandler(async (req,res) => {
   console.log(req.query)
   res.status(200).json({message: `Message recieved`});
 });
 
-module.exports = {getData};
+module.exports = {getData, getPickupData};
