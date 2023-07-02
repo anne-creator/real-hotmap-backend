@@ -8,6 +8,11 @@ const CONNECTION_STRING = 'mongodb+srv://hackthon:hackthon@cluster0.gzafe90.mong
 const googleMapAPIKey = 'AIzaSyAqxTIlZGOqKT95j1Xs3KAMjhnbgk9er_c';
 
 
+
+// simulator settings
+const MAX_ROWS = 10000;
+
+
 const calculateDrivingTime = async (originLat, originLng, destinationLat, destinationLng) => {
   const apiKey = googleMapAPIKey; 
   const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${originLat},${originLng}&destination=${destinationLat},${destinationLng}&key=${apiKey}`;
@@ -73,27 +78,85 @@ const generateRandomData = async () => {
   }
 };
 
-
-// Generate fake data and save to MongoDB Atlas
-const generateFakeData = async (rows) => {
+const clearAllRows = async () => {
   try {
     await mongoose.connect(CONNECTION_STRING, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      useUnifiedTopology: true
     });
 
-    for (let i = 0; i < rows; i++) {
+    await UberData.deleteMany({});
 
-      const fakeUberData = new UberData(await generateRandomData());
-      await fakeUberData.save();
-    }
-
-    console.log('Fake data saved to MongoDB Atlas');
+    console.log('All rows cleared from the collection.');
   } catch (error) {
-    console.error(error);
+    console.error('Error clearing rows:', error);
   } finally {
     mongoose.disconnect();
   }
 };
 
-generateFakeData(5);
+
+
+const removeExcessRows = async () => {
+  try {
+    const rowCount = await UberData.countDocuments();
+
+    if (rowCount > MAX_ROWS) {
+      const oldestRows = await UberData.find({}, null, {
+        sort: { pickup_datetime: 1 },
+        limit: rowCount - MAX_ROWS
+      });
+
+      const oldestRowIds = oldestRows.map((row) => row._id);
+
+      await UberData.deleteMany({ _id: { $in: oldestRowIds } });
+
+      console.log(`Removed ${oldestRowIds.length} oldest rows.`);
+    } else {
+      console.log('Total row count does not exceed the maximum. No rows removed.');
+    }
+  } catch (error) {
+    console.error('Error removing excess rows:', error);
+  }
+};
+
+
+const runDataGeneration = (interval, rows) => {
+  let start = new Date(2021, 0, 1);
+  let end = new Date(2021, 1, 1);
+
+  const generateAndRemoveRows = async () => {
+    try {
+      await mongoose.connect(CONNECTION_STRING, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
+
+      for (let i = 0; i < rows; i++) {
+        const fakeUberData = new UberData(await generateRandomData(start, end));
+        await fakeUberData.save();
+      }
+
+      console.log(`Generated ${rows} rows of fake data.`);
+
+      await removeExcessRows();
+    } catch (error) {
+      console.error('Error generating and removing rows:', error);
+    } finally {
+      mongoose.disconnect();
+    }
+
+    // Move start and end dates by 1 day
+    start.setDate(start.getDate() + 1);
+    end.setDate(end.getDate() + 1);
+  };
+
+  generateAndRemoveRows();
+
+  setInterval(() => {
+    generateAndRemoveRows();
+  }, interval);
+};
+
+runDataGeneration(2000, 1000);
+// clearAllRows();
