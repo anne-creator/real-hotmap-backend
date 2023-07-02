@@ -72,8 +72,24 @@ const padNumber = (number) => {
 
 
 const getData = asyncHandler(async (req,res) => {
-  console.log(req.query)
-  res.status(200).json({message: `Message recieved`});
+  const {BigQuery} = require('@google-cloud/bigquery');
+  const bigquery = new BigQuery();
+  const datasetId = "perceptive-day-388607.mangoDb_change_stream";
+  const tableId = "perceptive-day-388607.mangoDb_change_stream.NEW_MONDB_CHANGE_STREAM";
+  const query = `SELECT *
+  FROM \`perceptive-day-388607.mangoDb_change_stream.NEW_MONDB_CHANGE_STREAM\``;
+  const options = {
+      query: query,
+      location: 'northamerica-northeast2',
+    };
+    const [job] = await bigquery.createQueryJob(options);
+    console.log(`Job ${job.id} started.`);
+    const [rows] = await job.getQueryResults();
+    console.log('Rows:');
+    rows.forEach(row => console.log(row));
+    res.status(200).json(rows);
 });
+
+
 
 module.exports = {getData, getPickupData};
