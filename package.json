@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/anne-creator/realtime-hotmap-backend#readme",
   "dependencies": {
+    "@google-cloud/bigquery": "^6.2.0",
     "@google-cloud/pubsub": "^3.7.1",
     "avro-js": "^1.11.1",
     "axios": "^1.4.0",

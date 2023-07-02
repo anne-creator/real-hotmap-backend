@@ -9,8 +9,10 @@ const googleMapAPIKey = 'AIzaSyAqxTIlZGOqKT95j1Xs3KAMjhnbgk9er_c';
 
 
 
+
 // simulator settings
 const MAX_ROWS = 10000;
+
 
 
 const calculateDrivingTime = async (originLat, originLng, destinationLat, destinationLng) => {
@@ -78,6 +80,7 @@ const generateRandomData = async () => {
   }
 };
 
+
 const clearAllRows = async () => {
   try {
     await mongoose.connect(CONNECTION_STRING, {
@@ -90,12 +93,11 @@ const clearAllRows = async () => {
     console.log('All rows cleared from the collection.');
   } catch (error) {
     console.error('Error clearing rows:', error);
+
   } finally {
     mongoose.disconnect();
   }
 };
-
-
 
 const removeExcessRows = async () => {
   try {
@@ -160,3 +162,4 @@ const runDataGeneration = (interval, rows) => {
 
 runDataGeneration(2000, 1000);
 // clearAllRows();
+
