@@ -11,9 +11,28 @@ const googleMapAPIKey = 'AIzaSyAqxTIlZGOqKT95j1Xs3KAMjhnbgk9er_c';
 
 
 // simulator settings
-const MAX_ROWS = 10000;
+const MAX_ROWS = 300;
 
+const manhattanIntervals = {
+  minLat: 40.710796,
+  maxLat: 40.755940,
+  minLong: -74.004694,
+  maxLong: -73.975159
+};
 
+const newJerseyIntervals = {
+  minLat: 40.713678,
+  maxLat: 40.730874,
+  minLong: -74.053115,
+  maxLong: -74.036636
+};
+
+const brooklynIntervals = {
+  minLat: 40.676963,
+  maxLat: 40.698823,
+  minLong: -73.996323,
+  maxLong: -73.974395
+};
 
 const calculateDrivingTime = async (originLat, originLng, destinationLat, destinationLng) => {
   const apiKey = googleMapAPIKey; 
@@ -31,21 +50,20 @@ const calculateDrivingTime = async (originLat, originLng, destinationLat, destin
   }
 };
 
-const generateRandomData = async () => {
-  const mappingTable = await parseCSV();
-  const getRandomId = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+const generateRandomData = async (start, end) => {
+  const getRandomCoordinate = (minLat, maxLat, minLong, maxLong) => {
+    const lat = Math.random() * (maxLat - minLat) + minLat;
+    const long = Math.random() * (maxLong - minLong) + minLong;
+    return { lat, long };
   };
+  
+  const locations = [manhattanIntervals, newJerseyIntervals, brooklynIntervals];
+  const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+  const { minLat, maxLat, minLong, maxLong } = randomLocation;
+  
+  const { lat: pickupLat, long: pickupLong } = getRandomCoordinate(minLat, maxLat, minLong, maxLong);
+  const { lat: dropoffLat, long: dropoffLong } = getRandomCoordinate(minLat, maxLat, minLong, maxLong);
 
-  const pickUpId = getRandomId(1, 263);
-  const dropoffId = getRandomId(1, 263);
-
-  const { pickUpLat, pickUpLong, dropoffLat, dropoffLong } = {
-    pickUpLat: mappingTable[pickUpId].lat,
-    pickUpLong: mappingTable[pickUpId].long,
-    dropoffLat: mappingTable[dropoffId].lat,
-    dropoffLong: mappingTable[dropoffId].long
-  };
 
   const getRandomPlate = (length) => {
     let result = '';
@@ -58,18 +76,18 @@ const generateRandomData = async () => {
   };
 
   try {
-    const durationInMinutes = await calculateDrivingTime(pickUpLat, pickUpLong, dropoffLat, dropoffLong);
-
-    const start = new Date(2021, 0, 1);
-    const end = new Date(2021, 1, 1);
+    const durationInMinutes = await calculateDrivingTime(pickupLat, pickupLong, dropoffLat, dropoffLong);
     const pickupTime = start.getTime() + Math.random() * (end.getTime() - start.getTime());
     const dropoffTime = pickupTime + durationInMinutes * 60 * 1000;
 
     const randomUberData = {
       pickup_datetime: new Date(pickupTime),
       dropoff_datetime: new Date(dropoffTime),
-      PULocationID: pickUpId,
-      DOLocationID: dropoffId,
+
+      pickup_lat: pickupLat,
+      pickup_long: pickupLong,
+      dropoff_lat: dropoffLat,
+      dropoff_long: dropoffLong,
       Hvfhs_license_num: getRandomPlate(6)
     };
 
@@ -79,7 +97,6 @@ const generateRandomData = async () => {
     throw error;
   }
 };
-
 
 const clearAllRows = async () => {
   try {
@@ -93,7 +110,6 @@ const clearAllRows = async () => {
     console.log('All rows cleared from the collection.');
   } catch (error) {
     console.error('Error clearing rows:', error);
-
   } finally {
     mongoose.disconnect();
   }
@@ -127,7 +143,12 @@ const runDataGeneration = (interval, rows) => {
   let start = new Date(2021, 0, 1);
   let end = new Date(2021, 1, 1);
 
+  let isGenerating = false;
   const generateAndRemoveRows = async () => {
+    if (isGenerating) return;
+
+    isGenerating = true;
+
     try {
       await mongoose.connect(CONNECTION_STRING, {
         useNewUrlParser: true,
@@ -146,6 +167,8 @@ const runDataGeneration = (interval, rows) => {
       console.error('Error generating and removing rows:', error);
     } finally {
       mongoose.disconnect();
+      isGenerating = false;
+
     }
 
     // Move start and end dates by 1 day
@@ -160,6 +183,6 @@ const runDataGeneration = (interval, rows) => {
   }, interval);
 };
 
-runDataGeneration(2000, 1000);
+runDataGeneration(10000, 100);
 // clearAllRows();
 
