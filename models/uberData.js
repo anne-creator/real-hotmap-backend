@@ -10,13 +10,21 @@ const uberDataSchema = new Schema({
         type: Date,
         required: [true, "Please add a dropoff_datetime"]
     },
-    PULocationID:{
+    pickup_lat:{
         type: Number,
-        required: [true, "Please add a PULocationID"]
+        required: [true, "Please add a pickup_lat"]
     },
-    DOLocationID:{
+    pickup_long:{
         type: Number,
-        required: [true, "Please add a DOLocationID"]
+        required: [true, "Please add a pickup_long"]
+    },
+    dropoff_lat:{
+        type: Number,
+        required: [true, "Please add a dropoff_lat"]
+    },
+    dropoff_long:{
+        type: Number,
+        required: [true, "Please add a dropoff_long"]
     },
     Hvfhs_license_num :{
         type: String,
