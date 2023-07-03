@@ -1,7 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const UberData = require("../models/uberData");
-
 const getMappingTable = require("../mappingTable/locationIdToLatLong");
+const {BigQuery} = require('@google-cloud/bigquery');
+const bigquery = new BigQuery();
 //@desc Get Sample Data
 //@route GET /api/
 const getPickupData = async (req, res) => {
@@ -71,11 +72,23 @@ const padNumber = (number) => {
   return String(number).padStart(5, "0");
 };
 
-module.exports = { getPickupData };
 
 const getData = asyncHandler(async (req,res) => {
-  console.log(req.query)
-  res.status(200).json({message: `Message recieved`});
+
+  const query = `SELECT *
+  FROM \`perceptive-day-388607.mangoDb_change_stream.NEW_MONDB_CHANGE_STREAM\``;
+  const options = {
+      query: query,
+      location: 'northamerica-northeast2',
+    };
+    const [job] = await bigquery.createQueryJob(options);
+    console.log(`Job ${job.id} started.`);
+    const [rows] = await job.getQueryResults();
+    console.log('Rows:');
+    rows.forEach(row => console.log(row));
+    res.status(200).json(rows);
 });
 
-module.exports = {getData};
+
+
+module.exports = {getData, getPickupData};

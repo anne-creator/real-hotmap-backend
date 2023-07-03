@@ -9,6 +9,7 @@ const googleMapAPIKey = 'AIzaSyAqxTIlZGOqKT95j1Xs3KAMjhnbgk9er_c';
 
 
 
+
 // simulator settings
 const MAX_ROWS = 300;
 
@@ -32,7 +33,6 @@ const brooklynIntervals = {
   minLong: -73.996323,
   maxLong: -73.974395
 };
-
 
 const calculateDrivingTime = async (originLat, originLng, destinationLat, destinationLng) => {
   const apiKey = googleMapAPIKey; 
@@ -64,6 +64,7 @@ const generateRandomData = async (start, end) => {
   const { lat: pickupLat, long: pickupLong } = getRandomCoordinate(minLat, maxLat, minLong, maxLong);
   const { lat: dropoffLat, long: dropoffLong } = getRandomCoordinate(minLat, maxLat, minLong, maxLong);
 
+
   const getRandomPlate = (length) => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -82,6 +83,7 @@ const generateRandomData = async (start, end) => {
     const randomUberData = {
       pickup_datetime: new Date(pickupTime),
       dropoff_datetime: new Date(dropoffTime),
+
       pickup_lat: pickupLat,
       pickup_long: pickupLong,
       dropoff_lat: dropoffLat,
@@ -113,8 +115,6 @@ const clearAllRows = async () => {
   }
 };
 
-
-
 const removeExcessRows = async () => {
   try {
     const rowCount = await UberData.countDocuments();
@@ -144,11 +144,11 @@ const runDataGeneration = (interval, rows) => {
   let end = new Date(2021, 1, 1);
 
   let isGenerating = false;
-
   const generateAndRemoveRows = async () => {
     if (isGenerating) return;
 
     isGenerating = true;
+
     try {
       await mongoose.connect(CONNECTION_STRING, {
         useNewUrlParser: true,
@@ -168,6 +168,7 @@ const runDataGeneration = (interval, rows) => {
     } finally {
       mongoose.disconnect();
       isGenerating = false;
+
     }
 
     // Move start and end dates by 1 day
@@ -184,5 +185,4 @@ const runDataGeneration = (interval, rows) => {
 
 runDataGeneration(10000, 100);
 // clearAllRows();
-
 
