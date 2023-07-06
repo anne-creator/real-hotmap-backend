@@ -56,6 +56,10 @@ const generateRandomData = async (start, end) => {
     const long = Math.random() * (maxLong - minLong) + minLong;
     return { lat, long };
   };
+
+  const getRandomDensity = () => {
+    return Math.random();
+  };
   
   const locations = [manhattanIntervals, newJerseyIntervals, brooklynIntervals];
   const randomLocation = locations[Math.floor(Math.random() * locations.length)];
@@ -88,6 +92,7 @@ const generateRandomData = async (start, end) => {
       pickup_long: pickupLong,
       dropoff_lat: dropoffLat,
       dropoff_long: dropoffLong,
+      density: getRandomDensity(),
       Hvfhs_license_num: getRandomPlate(6)
     };
 
