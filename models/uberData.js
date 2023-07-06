@@ -26,6 +26,10 @@ const uberDataSchema = new Schema({
         type: Number,
         required: [true, "Please add a dropoff_long"]
     },
+    density:{
+        type: Number,
+        required: [true, "Please add a density"]
+    },
     Hvfhs_license_num :{
         type: String,
         required: [true, "Please add a Hvfhs_license_num "]
