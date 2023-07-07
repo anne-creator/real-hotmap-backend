@@ -76,7 +76,7 @@ const padNumber = (number) => {
 const getData = asyncHandler(async (req,res) => {
 
   const query = `SELECT *
-  FROM \`perceptive-day-388607.mangoDb_change_stream.test\``;
+  FROM \`perceptive-day-388607.mangoDb_change_stream.mongoDb_change_stream\``;
   const options = {
       query: query,
       location: 'northamerica-northeast2',
