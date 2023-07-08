@@ -14,10 +14,13 @@ app.use(express.json());
 app.use(cors());
 
 connectDb();
-app.use("/api/get", require("./routes/routes"));
+// app.use("/api/get", require("./routes/routes"));
 const server = app.listen(port, () => {
     console.log(`Server Run on ${port} `)
 })
+
+app.get("/api/get", getPickupData);
+
 const webSocket = createWebSocketServer(server);
 webSocket.on('connection', async (webSocketClient) => {
     console.log('A new client Connected!');

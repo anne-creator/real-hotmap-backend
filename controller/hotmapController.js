@@ -6,53 +6,27 @@ const bigquery = new BigQuery();
 //@desc Get Sample Data
 //@route GET /api/
 const getPickupData = async (req, res) => {
-  const uberData = await UberData.find();
-  // Count the occurrences of each locationId
-  const locationCounts = uberData.reduce((counts, data) => {
-    const locationId = data.PULocationID;
-    counts[locationId] = (counts[locationId] || 0) + 1;
-    return counts;
-  }, {});
+  try {
+    const uberData = await UberData.find();
 
-  const mappingTable = await getMappingTable();
+    const transformedData = uberData.map((data) => {
+      return {
+        pickup_datetime: data.pickup_datetime,
+        dropoff_datetime: data.dropoff_datetime,
+        pickup_lat: data.pickup_lat,
+        pickup_long: data.pickup_long,
+        dropoff_lat: data.dropoff_lat,
+        dropoff_long: data.dropoff_long,
+        density: data.density,
+        Hvfhs_license_num: data.Hvfhs_license_num,
+      };
+    });
 
-  const totalDataCount = uberData.length;
-  let maxDensity = 0;
-  for (const locationId in locationCounts) {
-    const density = locationCounts[locationId] / totalDataCount;
-    if (density > maxDensity) {
-      maxDensity = density;
-    }
+    res.json(transformedData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred" });
   }
-
-  const transformedData = uberData.map((data, index) => {
-    const formattedTime = formatDate(data.pickup_datetime);
-    const locationId = data.PULocationID;
-    const density = locationCounts[locationId] / totalDataCount;
-
-    const { lat, long } = mappingTable[locationId];
-    // Apply scaling factor to density
-    // const scalingFactor = 10; // Adjust this value to control the scaling
-    const scaledDensity = density / maxDensity;
-
-    return {
-        id: `nyk${padNumber(index + 1)}`, // Auto-incrementing ID
-        time: formattedTime,
-        density: scaledDensity,
-        lat: lat,
-        long: long,
-        type: "pickup",
-        // locationId: locationId, // Matches PULocationID
-
-    };
-  });
-  
-
-
-  const jsonResult = transformedData 
-
-
-  return JSON.stringify(jsonResult)
 };
 
 // Helper function to format date and time

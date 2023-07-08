@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {getData} = require("../controller/hotmapController");
+const {getPickupData} = require("../controller/hotmapController");
 
-router.route("/").get(getData);
+router.route("/").get(getPickupData);
 module.exports = router;
