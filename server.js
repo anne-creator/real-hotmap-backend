@@ -7,7 +7,9 @@ const port = process.env.PORT;
 const createWebSocketServer = require("./websocket/websocket");
 const UberData = require("./models/uberData");
 const cors = require('cors');
+
 const { runDataGeneration} = require('./simulator');
+
 
 const { getPickupData } = require('./controller/hotmapController');
 
