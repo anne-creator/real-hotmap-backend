@@ -7,27 +7,32 @@ const port = process.env.PORT;
 const createWebSocketServer = require("./websocket/websocket");
 const UberData = require("./models/uberData");
 const cors = require('cors');
-
+const { runDataGeneration} = require('./simulator');
 const { getPickupData } = require('./controller/hotmapController');
 const { getPastData } = require('./controller/hotmapController');
 app.use(express.json());
 app.use(cors());
 
 connectDb();
-// app.use("/api/get", require("./routes/routes"));
+
+
+app.get("/api/get", getPickupData);
+
+runDataGeneration(1000, 5);
+
 const server = app.listen(port, () => {
     console.log(`Server Run on ${port} `)
 })
 
 app.get("/api/get", getPickupData);
 app.get("/api/getPast", getPastData);
-const webSocket = createWebSocketServer(server);
-webSocket.on('connection', async (webSocketClient) => {
-    console.log('A new client Connected!');
+// const webSocket = createWebSocketServer(server);
+// webSocket.on('connection', async (webSocketClient) => {
+//     console.log('A new client Connected!');
 
-    const uberData = await getPickupData();
-    webSocketClient.send(JSON.stringify(uberData));
-});
+//     const uberData = await getPickupData();
+//     webSocketClient.send(JSON.stringify(uberData));
+// });
 
 // webSocket.on('connection', async (webSocketClient) => {
 //     console.log('A new client Connected!');
@@ -36,9 +41,9 @@ webSocket.on('connection', async (webSocketClient) => {
 // });
 
 
-webSocket.on('error', (error)=>{
-    console.log(error);
-});
+// webSocket.on('error', (error) => {
+//     console.log(error);
+// });
 
 // async function getTable() {
 //     const {BigQuery} = require('@google-cloud/bigquery');
