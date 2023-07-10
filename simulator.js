@@ -211,7 +211,7 @@ const runDataGeneration = (interval, rows) => {
     } catch (error) {
       console.error('Error generating and removing rows:', error);
     } finally {
-      mongoose.disconnect();
+      // mongoose.disconnect();
       isGenerating = false;
 
     }
