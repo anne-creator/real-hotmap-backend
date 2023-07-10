@@ -230,7 +230,6 @@ const runDataGeneration = (interval, rows) => {
 
 
 
-
 // runDataGeneration(1000, 5);
 
 // clearAllRows();

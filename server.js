@@ -7,6 +7,7 @@ const port = process.env.PORT;
 const createWebSocketServer = require("./websocket/websocket");
 const UberData = require("./models/uberData");
 const cors = require('cors');
+const { runDataGeneration} = require('./simulator');
 
 const { runDataGeneration} = require('./simulator');
 
@@ -23,6 +24,9 @@ app.get("/api/get", getPickupData);
 
 runDataGeneration(1000, 5);
 
+
+
+ 
 const server = app.listen(port, () => {
     console.log(`Server Run on ${port} `)
 })
