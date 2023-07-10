@@ -1,4 +1,3 @@
-Great! I have updated the README file to include the information about the real-time data visualization of taxi pickups and drop-offs in a heatmap. Here's the revised version:
 
 # Real-Time Taxi HotMap Display
 
