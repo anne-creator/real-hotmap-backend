@@ -9,7 +9,7 @@ const UberData = require("./models/uberData");
 const cors = require('cors');
 
 const { getPickupData } = require('./controller/hotmapController');
-
+const { getPastData } = require('./controller/hotmapController');
 app.use(express.json());
 app.use(cors());
 
@@ -20,7 +20,7 @@ const server = app.listen(port, () => {
 })
 
 app.get("/api/get", getPickupData);
-
+app.get("/api/getPast", getPastData);
 const webSocket = createWebSocketServer(server);
 webSocket.on('connection', async (webSocketClient) => {
     console.log('A new client Connected!');

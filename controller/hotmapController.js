@@ -8,7 +8,6 @@ const bigquery = new BigQuery();
 const getPickupData = async (req, res) => {
   try {
     const uberData = await UberData.find();
-
     const transformedData = uberData.map((data) => {
       return {
         pickup_datetime: data.pickup_datetime,
@@ -28,6 +27,33 @@ const getPickupData = async (req, res) => {
     res.status(500).json({ error: "An error occurred" });
   }
 };
+
+const getPastData = asyncHandler(async (req,res) => {
+
+  const start = new Date(req.query.timeStamp);
+  const end = new Date(req.query.timeStamp);
+  end.setMinutes(end.getMinutes() + 10)
+  console.log( start);
+  console.log( end);
+  const query = `SELECT *
+  FROM \`perceptive-day-388607.mangoDb_change_stream.mongoDb_change_stream\` 
+  WHERE pickup_datetime >= '${start.toISOString()}'
+  AND pickup_datetime <= '${end.toISOString()}'
+  `;
+  console.log(query)
+  const options = {
+      query: query,
+      location: 'northamerica-northeast2',
+    };
+    const [job] = await bigquery.createQueryJob(options);
+    console.log(`Job ${job.id} started.`);
+    const [rows] = await job.getQueryResults();
+    console.log('Rows:');
+    rows.forEach(row => console.log(row));
+    res.status(200).json(rows);
+});
+
+
 
 // Helper function to format date and time
 const formatDate = (date) => {
@@ -65,4 +91,4 @@ const getData = asyncHandler(async (req,res) => {
 
 
 
-module.exports = {getData, getPickupData};
+module.exports = {getData, getPickupData, getPastData};
