@@ -17,7 +17,7 @@ This project enables real
 
 ## Overview
 
-The Real-Time Taxi Data Display project provides a real-time heatmap visualization of taxi pickups and drop-offs. It utilizes a data simulator to generate taxi data, which is then persisted in MongoDB. Since the storage size is limited in the free tier of MongoDB, old data is automatically removed when the storage threshold is reached. MongoDB change streams are streamed to Google's Pub/Sub, ensuring reliable and scalable message delivery. Finally, the data is loaded into BigQuery for efficient data aggregation and analysis, enabling the creation of a real-time heatmap based on the latest taxi data.
+The Real-Time Taxi HotMap project provides a real-time heatmap visualization of taxi pickups and drop-offs. It utilizes a data simulator to generate taxi data, which is then persisted in MongoDB. Since the storage size is limited in the free tier of MongoDB, old data is automatically removed when the storage threshold is reached. MongoDB change streams are streamed to Google's Pub/Sub, ensuring reliable and scalable message delivery. Finally, the data is loaded into BigQuery for efficient data aggregation and analysis, enabling the creation of a real-time heatmap based on the latest taxi data.
 
 ## Features
 
@@ -29,21 +29,22 @@ The Real-Time Taxi Data Display project provides a real-time heatmap visualizati
 
 ## Getting Started
 
-To get started with the Real-Time Taxi Data Display, follow these steps:
+To get started with the Real-Time Taxi HotMap locally, follow these steps:
 
-1. Clone the repository: `git clone <repository-url>`
-2. Install the necessary dependencies: `npm install`
-3. Configure the environment variables according to your setup.
-4. Start the real-time data simulator: `npm start simulator`
-5. Connect MongoDB to Google's Pub/Sub for streaming change streams.
-6. Load the data into BigQuery for analysis and visualization.
-7. Start the frontend application to display the real-time heatmap.
+1. Clone the backend repository: `git clone [<repository-url>](https://github.com/anne-creator/realtime-hotmap-backend.git)`
+2. Clone the front repository: `git clone [<repository-url>](https://github.com/RuiWang98/realtime-hotmap-frontend.git)`
+3. Clone the pipeline repository: `git clone [<repository-url>](https://github.com/TYL1026/mongoDB-pubsub-pipline.git)` 
+4. Install the necessary dependencies: `npm install`
+5. Configure the environment variables according to your setup.
+6. Start the pipeline application to connect MongoDB with Pub/Sub
+7. Start the backend application to fetch data from MongoDB and Pub/Sub.
+8. Start the frontend application to display the real-time heatmap.
 
 For detailed instructions and configuration options, refer to the [Installation Guide](./docs/installation.md).
 
 ## Architecture
 
-The Real-Time Taxi Data Display project follows a microservice-based architecture, leveraging MongoDB, Google's Pub/Sub, and BigQuery. The components involved are as follows:
+The Real-Time Taxi HotMap project follows a microservice-based architecture, leveraging MongoDB, Google's Pub/Sub, and BigQuery. The components involved are as follows:
 
 - **Data Simulator**: Generates and simulates real-time taxi data for pickups and drop-offs.
 - **MongoDB**: Persists the real-time taxi data, automatically removing old data when storage thresholds are reached.
@@ -61,8 +62,8 @@ The Real-Time Taxi HotMap project utilizes the following technologies:
 - **MongoDB**: A document database for storing and persisting real-time taxi data.
 - **Google Pub/Sub**: A reliable and scalable message broker for streaming MongoDB change streams.
 - **BigQuery**: A fully managed, serverless data warehouse for efficient data analysis and visualization.
-- **Frontend Framework**: A web-based framework (e.g., React, Angular, or Vue.js) for building the real-time heatmap interface.
-- **Data Simulator**: A tool or script for generating and simulating real-time taxi data.
+- **Frontend Framework**: A web-based framework (React) for building the real-time heatmap interface.
+- **Data Simulator**: A script for generating and simulating real-time taxi data.
 
 For a comprehensive list of dependencies and libraries used, please refer to the project's documentation.
 
