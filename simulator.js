@@ -5,13 +5,9 @@ const axios = require('axios');
 
 
 const CONNECTION_STRING = 'mongodb+srv://hackthon:hackthon@cluster0.gzafe90.mongodb.net/Uber_NYC?retryWrites=true&w=majority';
-const googleMapAPIKey = 'AIzaSyAqxTIlZGOqKT95j1Xs3KAMjhnbgk9er_c';
-
-
 
 
 // simulator settings
-const MAX_ROWS = 300;
 
 const manhattanIntervals = {
   minLat: 40.710796,
@@ -34,20 +30,65 @@ const brooklynIntervals = {
   maxLong: -73.974395
 };
 
-const calculateDrivingTime = async (originLat, originLng, destinationLat, destinationLng) => {
-  const apiKey = googleMapAPIKey; 
-  const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${originLat},${originLng}&destination=${destinationLat},${destinationLng}&key=${apiKey}`;
+const queenIntervals = {
+  minLat: 40.661103,
+  maxLat: 40.749786,
+  minLong: -73.866314,
+  maxLong: -73.717254
+};
 
-  try {
-    const response = await axios.get(url);
-    const duration = response.data.routes[0].legs[0].duration.value; 
-    const durationInMinutes = Math.ceil(duration / 60);
+const newarkIntervals = {
+  minLat: 40.691223,
+  maxLat: 40.779951,
+  minLong: -74.234734,
+  maxLong: -74.140345
+};
 
-    return durationInMinutes;
-  } catch (error) {
-    console.error('Error calculating driving time:', error);
-    throw error;
-  }
+
+
+
+// const calculateDrivingTime = async (originLat, originLng, destinationLat, destinationLng) => {
+//   const apiKey = googleMapAPIKey;
+//   const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${originLat},${originLng}&destination=${destinationLat},${destinationLng}&key=${apiKey}`;
+
+//   try {
+//     const response = await axios.get(url);
+//     console.log(response.data);
+//     const duration = response.data.routes[0].legs[0].duration.value;
+//     const durationInMinutes = Math.ceil(duration / 60);
+
+//     return durationInMinutes;
+//   } catch (error) {
+//     console.error('Error calculating driving time:', error);
+//     throw error;
+//   }
+// };
+
+const calculateDrivingDuration = (pickupLat, pickupLng, dropoffLat, dropoffLng) => {
+  const R = 6371; // Radius of the Earth in kilometers
+  const lat1 = toRadians(pickupLat);
+  const lat2 = toRadians(dropoffLat);
+  const latDiff = toRadians(dropoffLat - pickupLat);
+  const lngDiff = toRadians(dropoffLng - pickupLng);
+
+  // Haversine formula
+  const a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
+    Math.cos(lat1) * Math.cos(lat2) *
+    Math.sin(lngDiff / 2) * Math.sin(lngDiff / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distance between pickup and dropoff in kilometers
+
+  // Calculate estimated trip duration
+  const speed = 10; // Fixed speed in km/h
+  const duration = distance / speed; // Trip duration in hours
+  // Convert duration to minutes
+  const durationInMinutes = duration * 60;
+
+  return Math.ceil(durationInMinutes);
+};
+
+const toRadians = (angle) => {
+  return angle * (Math.PI / 180);
 };
 
 const generateRandomData = async (start, end) => {
@@ -60,11 +101,11 @@ const generateRandomData = async (start, end) => {
   const getRandomDensity = () => {
     return Math.random();
   };
-  
-  const locations = [manhattanIntervals, newJerseyIntervals, brooklynIntervals];
+
+  const locations = [manhattanIntervals, newJerseyIntervals, brooklynIntervals, queenIntervals, newarkIntervals];
   const randomLocation = locations[Math.floor(Math.random() * locations.length)];
   const { minLat, maxLat, minLong, maxLong } = randomLocation;
-  
+
   const { lat: pickupLat, long: pickupLong } = getRandomCoordinate(minLat, maxLat, minLong, maxLong);
   const { lat: dropoffLat, long: dropoffLong } = getRandomCoordinate(minLat, maxLat, minLong, maxLong);
 
@@ -80,14 +121,13 @@ const generateRandomData = async (start, end) => {
   };
 
   try {
-    const durationInMinutes = await calculateDrivingTime(pickupLat, pickupLong, dropoffLat, dropoffLong);
+    const durationInMinutes = calculateDrivingDuration(pickupLat, pickupLong, dropoffLat, dropoffLong);
     const pickupTime = start.getTime() + Math.random() * (end.getTime() - start.getTime());
     const dropoffTime = pickupTime + durationInMinutes * 60 * 1000;
 
     const randomUberData = {
       pickup_datetime: new Date(pickupTime),
       dropoff_datetime: new Date(dropoffTime),
-
       pickup_lat: pickupLat,
       pickup_long: pickupLong,
       dropoff_lat: dropoffLat,
@@ -122,31 +162,30 @@ const clearAllRows = async () => {
 
 const removeExcessRows = async () => {
   try {
-    const rowCount = await UberData.countDocuments();
+    const currentTime = new Date();
+    const fifteenMinutesAgo = new Date(currentTime.getTime() - 15 * 60 * 1000);
 
-    if (rowCount > MAX_ROWS) {
-      const oldestRows = await UberData.find({}, null, {
-        sort: { pickup_datetime: 1 },
-        limit: rowCount - MAX_ROWS
-      });
+    await mongoose.connect(CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
-      const oldestRowIds = oldestRows.map((row) => row._id);
+    await UberData.deleteMany({ pickup_datetime: { $lt: fifteenMinutesAgo } });
 
-      await UberData.deleteMany({ _id: { $in: oldestRowIds } });
-
-      console.log(`Removed ${oldestRowIds.length} oldest rows.`);
-    } else {
-      console.log('Total row count does not exceed the maximum. No rows removed.');
-    }
+    console.log('Removed excess rows older than 15 minutes.');
   } catch (error) {
     console.error('Error removing excess rows:', error);
+  } finally {
+    mongoose.disconnect();
   }
 };
 
 
 const runDataGeneration = (interval, rows) => {
-  let start = new Date(2021, 0, 1);
-  let end = new Date(2021, 1, 1);
+  console.log("start generating data");
+  let start = new Date(Date.now());
+  console.log(start);
+
 
   let isGenerating = false;
   const generateAndRemoveRows = async () => {
@@ -161,7 +200,8 @@ const runDataGeneration = (interval, rows) => {
       });
 
       for (let i = 0; i < rows; i++) {
-        const fakeUberData = new UberData(await generateRandomData(start, end));
+        const fakeUberData = new UberData(await generateRandomData(start, start));
+        console.log(fakeUberData);
         await fakeUberData.save();
       }
 
@@ -177,17 +217,20 @@ const runDataGeneration = (interval, rows) => {
     }
 
     // Move start and end dates by 1 day
-    start.setDate(start.getDate() + 1);
-    end.setDate(end.getDate() + 1);
+    // start.setDate(start.getDate() + 2);
+    // end.setDate(end.getDate() + 2);
   };
 
-  generateAndRemoveRows();
+  // Start the interval
+  const simulatorInterval = setInterval(generateAndRemoveRows, interval);
 
-  setInterval(() => {
-    generateAndRemoveRows();
-  }, interval);
+  return simulatorInterval;
 };
 
-runDataGeneration(10000, 100);
+
+
+
+runDataGeneration(1000, 5);
 // clearAllRows();
 
+module.exports = { runDataGeneration, clearAllRows,  };
