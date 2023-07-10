@@ -1,6 +1,6 @@
 Great! I have updated the README file to include the information about the real-time data visualization of taxi pickups and drop-offs in a heatmap. Here's the revised version:
 
-# Real-Time Taxi Data Display
+# Real-Time Taxi HotMap Display
 
 This project enables real
 -time visualization of taxi pickups and drop-offs using a heatmap in the frontend. It leverages Change Data Capture (CDC) to generate and persist real-time taxi data, and utilizes MongoDB, Google's Pub/Sub, and BigQuery for data storage, streaming, and analysis.
@@ -57,7 +57,7 @@ For a more detailed understanding of the architecture and the interaction betwee
 
 ## Technologies
 
-The Real-Time Taxi Data Display project utilizes the following technologies:
+The Real-Time Taxi HotMap project utilizes the following technologies:
 
 - **MongoDB**: A document database for storing and persisting real-time taxi data.
 - **Google Pub/Sub**: A reliable and scalable message broker for streaming MongoDB change streams.
@@ -67,10 +67,7 @@ The Real-Time Taxi Data Display project utilizes the following technologies:
 
 For a comprehensive list of dependencies and libraries used, please refer to the project's documentation.
 
-## Contributing
 
-Contributions are welcome! If you'd like to contribute to the Real-Time Taxi Data Display project, please follow the guidelines outlined in the [Contributing Guide](./CONTRIBUTING.md).
 
 ## License
 
-The Real-Time Taxi Data Display project is licensed under the [MIT License](./LICENSE). You are free to use, modify, and distribute this project as per the terms of the license.
