@@ -1,1 +1,7 @@
 GET http://localhost:8080/api/get
+###
+POST http://localhost:8080/start-simulator
+###
+DELETE http://localhost:8080/clearall
+###
+POST http://localhost:8080/pause-simulator
