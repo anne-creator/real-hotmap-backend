@@ -22,7 +22,6 @@ app.get("/api/getPast", getPastData);
 runDataGeneration(1000, 5);
 
 
-
 const server = app.listen(port, () => {
     console.log(`Server Run on ${port} `)
 })
