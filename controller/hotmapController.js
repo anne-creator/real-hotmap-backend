@@ -30,8 +30,8 @@ const getPickupData = async (req, res) => {
 
 const getPastData = asyncHandler(async (req,res) => {
 
-  const start = new Date(req.query.timeStamp);
-  const end = new Date(req.query.timeStamp);
+  const start = new Date(parseInt(req.query.timeStamp));
+  const end = new Date(parseInt(req.query.timeStamp));
   end.setMinutes(end.getMinutes() + 10)
   console.log( start);
   console.log( end);
