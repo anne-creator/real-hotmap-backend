@@ -17,18 +17,20 @@ const manhattanIntervals = {
 };
 
 const newJerseyIntervals = {
-  minLat: 40.713678,
-  maxLat: 40.730874,
-  minLong: -74.053115,
-  maxLong: -74.036636
+  minLat: 40.714861,
+  maxLat: 40.797220,
+  minLong: -74.089590,
+  maxLong: -74.028883
 };
 
 const brooklynIntervals = {
-  minLat: 40.676963,
-  maxLat: 40.698823,
-  minLong: -73.996323,
-  maxLong: -73.974395
+  minLat: 40.612250,
+  maxLat: 40.702718,
+  minLong: -74.006052,
+  maxLong: -73.891096
 };
+
+
 
 const queenIntervals = {
   minLat: 40.661103,
@@ -43,6 +45,8 @@ const newarkIntervals = {
   minLong: -74.234734,
   maxLong: -74.140345
 };
+
+
 
 
 
@@ -91,7 +95,7 @@ const toRadians = (angle) => {
   return angle * (Math.PI / 180);
 };
 
-const generateRandomData = async (start, end) => {
+const generateRandomData = async () => {
   const getRandomCoordinate = (minLat, maxLat, minLong, maxLong) => {
     const lat = Math.random() * (maxLat - minLat) + minLat;
     const long = Math.random() * (maxLong - minLong) + minLong;
@@ -122,8 +126,8 @@ const generateRandomData = async (start, end) => {
 
   try {
     const durationInMinutes = calculateDrivingDuration(pickupLat, pickupLong, dropoffLat, dropoffLong);
-    const pickupTime = start.getTime() + Math.random() * (end.getTime() - start.getTime());
-    const dropoffTime = pickupTime + durationInMinutes * 60 * 1000;
+    const dropoffTime = new Date();
+    const pickupTime = new Date(dropoffTime.getTime() - durationInMinutes * 60 * 1000);
 
     const randomUberData = {
       pickup_datetime: new Date(pickupTime),
@@ -179,9 +183,6 @@ const removeExcessRows = async () => {
 
 const runDataGeneration = (interval, rows) => {
   console.log("start generating data");
-  let start = new Date(Date.now());
-  console.log(start);
-
 
   let isGenerating = false;
   const generateAndRemoveRows = async () => {
@@ -196,8 +197,8 @@ const runDataGeneration = (interval, rows) => {
       });
 
       for (let i = 0; i < rows; i++) {
-        const fakeUberData = new UberData(await generateRandomData(start, start));
-        // console.log(fakeUberData);
+        const fakeUberData = new UberData(await generateRandomData());
+
         await fakeUberData.save();
       }
 
@@ -226,7 +227,7 @@ const runDataGeneration = (interval, rows) => {
 
 
 
-// runDataGeneration(1000, 5);
+runDataGeneration(1000, 5);
 // clearAllRows();
 
 module.exports = { runDataGeneration, clearAllRows,  };
