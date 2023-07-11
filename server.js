@@ -18,6 +18,7 @@ connectDb();
 
 app.get("/api/get", getPickupData);
 app.get("/api/getPast", getPastData);
+
 runDataGeneration(1000, 5);
 
 
