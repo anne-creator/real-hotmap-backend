@@ -17,16 +17,14 @@ connectDb();
 
 
 app.get("/api/get", getPickupData);
-
-// runDataGeneration(1000, 5);
-
+app.get("/api/getPast", getPastData);
+runDataGeneration(1000, 5);
 
 
 const server = app.listen(port, () => {
     console.log(`Server Run on ${port} `)
 })
 
-app.get("/api/getPast", getPastData);
 // const webSocket = createWebSocketServer(server);
 // webSocket.on('connection', async (webSocketClient) => {
 //     console.log('A new client Connected!');
