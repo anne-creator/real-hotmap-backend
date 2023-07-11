@@ -69,6 +69,11 @@ The Real-Time Taxi HotMap project utilizes the following technologies:
 
 For a comprehensive list of dependencies and libraries used, please refer to the project's documentation.
 
+## Simulator
+Our simulator is designed to generate and store realistic fake New York City Uber trip data in a MongoDB database. Leveraging the Mongoose library, it connects to the database and operates in real-time, continuously generating new data. 
+By utilizing random coordinates within defined intervals, it simulates pickup and dropoff locations. The simulator calculates estimated driving durations between these locations using the Haversine formula, ensuring accurate results. 
+To maintain data integrity, it regularly removes excess rows from the database, keeping it within the desired limits.
+
 ## Contribution
 This project was contributed to by the following individuals:
 
