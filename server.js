@@ -16,14 +16,16 @@ app.use(cors());
 connectDb();
 
 
-app.get("/api/get", getPickupData);
-app.get("/api/getPast", getPastData);
+
 runDataGeneration(1000, 5);
 
 
 const server = app.listen(port, () => {
     console.log(`Server Run on ${port} `)
 })
+
+app.get("/api/get", getPickupData);
+app.get("/api/getPast", getPastData);
 
 // const webSocket = createWebSocketServer(server);
 // webSocket.on('connection', async (webSocketClient) => {
