@@ -11,7 +11,7 @@ This project enables real-time visualization of taxi pickups and drop-offs using
 - [Getting Started](#getting-started)
 - [Architecture](#architecture)
 - [Technologies](#technologies)
-- [Contributing](#contributing)
+- [Contribution](#Contribution)
 - [License](#license)
 
 ## Overview
@@ -69,7 +69,12 @@ The Real-Time Taxi HotMap project utilizes the following technologies:
 
 For a comprehensive list of dependencies and libraries used, please refer to the project's documentation.
 
+## Contribution
+This project was contributed to by the following individuals:
 
-
+- [Anne Liy](https://github.com/anne-creator)
+- [Tony Li](https://github.com/TYL1026)
+- [Rui Wang](https://github.com/RuiWang98)
+- [Zelin Tian](https://github.com/ZelinTian)
 ## License
 
