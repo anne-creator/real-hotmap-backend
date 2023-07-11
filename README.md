@@ -40,21 +40,22 @@ To get started with the Real-Time Taxi HotMap locally, follow these steps:
 7. Start the backend application to fetch data from MongoDB and Pub/Sub.
 8. Start the frontend application to display the real-time heatmap.
 
-For detailed instructions and configuration options, refer to the [Installation Guide](./docs/installation.md).
-
 To get started with the Real-Time Taxi HotMap online, please visit : [FrontEnd Website](https://realtime-hotmap-frontend-dqij5lkaea-uc.a.run.app )
 ## Architecture
 
 The Real-Time Taxi HotMap project follows a microservice-based architecture, leveraging MongoDB, Google's Pub/Sub, and BigQuery. The components involved are as follows:
 
-- **Data Simulator**: Generates and simulates real-time taxi data for pickups and drop-offs.
+- **Real-Time Data Simulator**: Generates and simulates real-time taxi data for pickups and drop-offs.
 - **MongoDB**: Persists the real-time taxi data, automatically removing old data when storage thresholds are reached.
 - **Google Pub/Sub**: Streams MongoDB change streams, ensuring reliable and scalable message delivery.
 - **BigQuery**: Stores the taxi data for efficient aggregation and analysis, enabling the creation of real-time heatmaps.
 - **Frontend**: Displays the real-time heatmap, visualizing taxi pickups and drop-offs on a web-based interface.
 
-For a more detailed understanding of the architecture and the interaction between components, please refer to the [Architecture Guide](./docs/architecture.md).
-![T-Trainee drawio](https://github.com/anne-creator/realtime-hotmap-backend/assets/65515982/af50f390-2261-4ba7-b2e6-2410d090d308)
+<br/>
+<br/>
+<br/>
+
+![T-Trainee drawio](https://github.com/anne-creator/realtime-hotmap-backend/assets/65515982/28bd6cc0-42da-4d90-9fb2-47f835ee29f3)
 
 ## Technologies
 
