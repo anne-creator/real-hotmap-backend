@@ -72,7 +72,7 @@ For a comprehensive list of dependencies and libraries used, please refer to the
 ## Contribution
 This project was contributed to by the following individuals:
 
-- [Anne Liy](https://github.com/anne-creator)
+- [Anne Liu](https://github.com/anne-creator)
 - [Tony Li](https://github.com/TYL1026)
 - [Rui Wang](https://github.com/RuiWang98)
 - [Zelin Tian](https://github.com/ZelinTian)
