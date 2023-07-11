@@ -155,9 +155,7 @@ const clearAllRows = async () => {
     console.log('All rows cleared from the collection.');
   } catch (error) {
     console.error('Error clearing rows:', error);
-  } finally {
-    mongoose.disconnect();
-  }
+  } 
 };
 
 const removeExcessRows = async () => {
@@ -175,8 +173,6 @@ const removeExcessRows = async () => {
     console.log('Removed excess rows older than 15 minutes.');
   } catch (error) {
     console.error('Error removing excess rows:', error);
-  } finally {
-    mongoose.disconnect();
   }
 };
 
