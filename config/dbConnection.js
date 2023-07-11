@@ -14,6 +14,7 @@ let retryAttempts = 0;
 const connectDb = async () => {
   try {
     const connect = await mongoose.connect(process.env.CONNECTION_STRING, {
+
       useNewUrlParser: true,
       useUnifiedTopology: true,
       connectTimeoutMS: 120000, // Set a longer timeout (e.g., 2 minutes)
