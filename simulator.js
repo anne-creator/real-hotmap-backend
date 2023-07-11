@@ -201,7 +201,7 @@ const runDataGeneration = (interval, rows) => {
 
       for (let i = 0; i < rows; i++) {
         const fakeUberData = new UberData(await generateRandomData(start, start));
-        console.log(fakeUberData);
+        // console.log(fakeUberData);
         await fakeUberData.save();
       }
 
