@@ -7,7 +7,7 @@ const port = process.env.PORT;
 const createWebSocketServer = require("./websocket/websocket");
 const UberData = require("./models/uberData");
 const cors = require('cors');
-const { runDataGeneration} = require('./simulator');
+// const { runDataGeneration} = require('./simulator');
 const { getPickupData } = require('./controller/hotmapController');
 const { getPastData } = require('./controller/hotmapController');
 app.use(express.json());
@@ -24,7 +24,6 @@ runDataGeneration(1000, 5);
 const server = app.listen(port, () => {
     console.log(`Server Run on ${port} `)
 })
-
 
 // const webSocket = createWebSocketServer(server);
 // webSocket.on('connection', async (webSocketClient) => {
