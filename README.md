@@ -1,8 +1,7 @@
 
 # Real-Time Taxi HotMap Display
 
-This project enables real
--time visualization of taxi pickups and drop-offs using a heatmap in the frontend. It leverages Change Data Capture (CDC) to generate and persist real-time taxi data, and utilizes MongoDB, Google's Pub/Sub, and BigQuery for data storage, streaming, and analysis.
+This project enables real-time visualization of taxi pickups and drop-offs using a heatmap in the frontend. It leverages Change Data Capture (CDC) to generate and persist real-time taxi data, and utilizes MongoDB with CDC, Google's Pub/Sub, BigQuery, and Google Cloud Platform (GCP) for data storage, streaming, analysis, and hosting.
 
 ## Table of Contents
 
@@ -17,7 +16,7 @@ This project enables real
 
 ## Overview
 
-The Real-Time Taxi HotMap project provides a real-time heatmap visualization of taxi pickups and drop-offs. It utilizes a data simulator to generate taxi data, which is then persisted in MongoDB. Since the storage size is limited in the free tier of MongoDB, old data is automatically removed when the storage threshold is reached. MongoDB change streams are streamed to Google's Pub/Sub, ensuring reliable and scalable message delivery. Finally, the data is loaded into BigQuery for efficient data aggregation and analysis, enabling the creation of a real-time heatmap based on the latest taxi data.
+The Real-Time Taxi HotMap project provides a real-time heatmap visualization of taxi pickups and drop-offs. It utilizes Change Data Capture (CDC) to capture and process real-time taxi data. CDC captures data changes from the source (e.g., a MongoDB database) and streams them to downstream systems for further processing and analysis. In this project, CDC captures changes stream from MongoDB and streams them to Google's Pub/Sub. The data is then loaded into BigQuery for efficient data aggregation and analysis, enabling the creation of a real-time heatmap based on the latest taxi data. The backend and frontend components are hosted on Google Cloud Platform (GCP).
 
 ## Features
 
@@ -26,7 +25,8 @@ The Real-Time Taxi HotMap project provides a real-time heatmap visualization of 
 - **Storage Optimization**: Automatically remove old data from MongoDB to manage storage limitations imposed by the free tier.
 - **Reliable Data Streaming**: Utilize Google's Pub/Sub as a reliable and scalable message broker for streaming MongoDB change streams.
 - **Efficient Data Analysis**: Leverage BigQuery for data aggregation and analysis, enabling insights into taxi patterns and trends.
-
+- **Change Data Capture (CDC)s**: Utilize MongoDB's CDC feature to capture and stream real-time taxi data changes.
+  
 ## Getting Started
 
 To get started with the Real-Time Taxi HotMap locally, follow these steps:
@@ -42,6 +42,7 @@ To get started with the Real-Time Taxi HotMap locally, follow these steps:
 
 For detailed instructions and configuration options, refer to the [Installation Guide](./docs/installation.md).
 
+To get started with the Real-Time Taxi HotMap online, please visit : [FrontEnd Website](https://realtime-hotmap-frontend-dqij5lkaea-uc.a.run.app )
 ## Architecture
 
 The Real-Time Taxi HotMap project follows a microservice-based architecture, leveraging MongoDB, Google's Pub/Sub, and BigQuery. The components involved are as follows:
