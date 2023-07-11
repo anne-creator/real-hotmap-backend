@@ -17,6 +17,7 @@ const connectDb = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       connectTimeoutMS: 120000, 
+
     });
     console.log("Database connected");
   } catch (err) {
